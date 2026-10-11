@@ -5,6 +5,8 @@ A 16:9 window follows your **mouse** or **controller stick** across the screen a
 
 One Lua file. No Python, no plugins, nothing else to install.
 
+**New here?** The [full guide](GUIDE.md) covers why you'd want this, step-by-step install, how it works, and setups for mouse games, controller games, tutorials, vertical clips and multi-monitor.
+
 ---
 
 ## Install (1 minute)
@@ -53,6 +55,8 @@ The script crops that source in whichever scene is live.
 - **Game capture shows nothing yet:** the script waits until the game is hooked and has a size.
 - **Controller does nothing:** an XInput (Xbox-compatible) controller is needed. Mouse and controller input work on Windows only.
 - **View is offset on a multi-monitor setup:** set **Monitor X offset**.
+
+More fixes in the [guide's troubleshooting section](GUIDE.md#troubleshooting).
 
 ---
 
