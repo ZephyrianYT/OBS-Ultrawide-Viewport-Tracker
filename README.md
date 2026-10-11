@@ -1,101 +1,69 @@
-# 🚀 OBS Ultrawide Viewport Tracker (v2.0 Master Edition)
+# OBS Ultrawide Viewport Tracker
 
-> **Stream Ultrawide to standard 16:9 without black bars, frame drops, or setup headaches.**
+Stream or record an **ultrawide (21:9 / 32:9) monitor as normal 16:9** without black bars.
+A 16:9 window follows your **mouse** or **controller stick** across the screen and glides smoothly.
 
-The **all-in-one, zero-dependency OBS Studio solution** for 21:9 and 32:9 monitors. It dynamically tracks your mouse cursor or gamepad analog stick and glides a 16:9 camera smoothly across your screen in real time.
+One Lua file. No Python, no plugins, nothing else to install.
 
----
-
-### 🔥 Why You Want This:
-- **🪶 Zero-Config & Native:** Pure OBS Lua + FFI. **No Python installations**, no `pip` dependencies, and zero setup friction.
-- **⚡ 1-Click Scene Setup:** Hit one button in OBS and it auto-generates your tracked scene with correct alignments automatically.
-- **🎮 Mouse & Gamepad Ready:** Track via desktop cursor or steer the viewport using your Xbox / PC controller's analog sticks via native XInput.
-- **✨ Framerate-Independent Smoothing:** Silky-smooth exponential decay camera gliding that feels fluid at 30, 60, or 120+ FPS.
-- **🎯 Smart Deadzones & Auto-Centering:** Prevents camera shaking during minor cursor twitches and gently re-centers when you're AFK.
+**New here?** The [full guide](GUIDE.md) covers why you'd want this, step-by-step install, how it works, and setups for mouse games, controller games, tutorials, vertical clips and multi-monitor.
 
 ---
 
-## 🛠️ Open-Source & Built to Be Modified
-> **Take it. Break it. Upgrade it.**  
-> This engine was built as a clean, high-performance base meant to be **ripped apart, modified, customized, and integrated** into your own streaming layouts, plugins, or overlay stacks. If you build something cool with it, submit a PR or fork away!
+## Install (1 minute)
+
+1. **Download [`ultrawide_tracker.lua`](ultrawide_tracker.lua)** (open it, then click the download button).
+2. In OBS: **Tools → Scripts → `+`** and pick the file.
+3. In the script panel, choose your game or display capture under **Capture Source**.
+4. Click **1-Click Setup Scene**.
+
+That's it. OBS switches to a new `[Tracked] Ultrawide Viewport` scene and the view follows your mouse.
+
+> **Tip:** set your OBS canvas (**Settings → Video → Base Resolution**) to a 16:9 size such as `1920x1080` or `2560x1440`. The script works out the window size from your source and canvas automatically.
 
 ---
 
-## ⚡ Quick Start (v2.0)
+## Settings
 
-### 1. Download
-Grab **`ultrawide_tracker.lua`** from this repository (or from the Releases page).
-
-### 2. Load into OBS
-1. Open OBS Studio and go to **Tools** → **Scripts**.
-2. Click the **`+`** (Add) button at the bottom left.
-3. Select `ultrawide_tracker.lua`.
-
-### 3. One-Click Setup
-1. In the Script settings panel, choose your game or monitor under **Capture Source**.
-2. Click the **`⚡ 1-Click Auto Setup Scene`** button.
-3. OBS will generate a `[Tracked] Ultrawide Viewport` scene with all transforms pre-applied. You're ready to stream!
-
----
-
-## ⚙️ Modern Control Options
-
-| Setting | What It Does |
+| Setting | What it does |
 |---|---|
-| **Capture Source** | The target Game Capture, Display Capture, or Window Capture. |
-| **Input Controller** | Switch between `Mouse Cursor`, `Gamepad (Right Stick)`, `Gamepad (Left Stick)`, or `Manual Snap`. |
-| **Resolution Preset** | `Auto-Detect` matches your canvas automatically, or pick manual 21:9 / 32:9 presets. |
-| **Tracking Axis** | `Horizontal Only` (recommended for HUD stability) or `2D (Horizontal & Vertical)`. |
-| **Panning Smoothness** | Controls glide speed (higher = faster snap, lower = cinematic glide). |
-| **Center Deadzone** | Inner deadzone area where small movements won't shake the viewport. |
-| **Inactivity Auto-Center** | Smoothly glides back to center when no input is detected. |
+| **Capture Source** | The game, display or window capture to pan across. |
+| **Follow** | `Mouse cursor`, `Controller - right stick`, `Controller - left stick`, or `Hotkeys only`. |
+| **Direction** | `Left / right only` (recommended) or also `up / down`. |
+| **Speed** | Higher = snappier, lower = smoother, more cinematic. |
+| **Mouse center deadzone** | Small movements near the center don't move the view. |
+| **Stick deadzone** | Ignores controller stick drift. |
+| **Return to center when idle** | Glides back to center after the idle delay. |
+| **Monitor X offset** | Only for multi-monitor setups: the left edge (in pixels) of the monitor you capture, e.g. `1920` if it sits right of a 1080p screen. |
+
+## Hotkeys
+
+Set these in **OBS Settings → Hotkeys**:
+
+- **Ultrawide: Toggle Tracking**: freeze or unfreeze the view
+- **Ultrawide: Snap Left / Center / Right**: jump the view; moving the mouse or stick takes over again
 
 ---
 
-## ⌨️ Native OBS Hotkeys
-Configure these under **OBS Settings → Hotkeys**:
-- **Ultrawide: Toggle Tracking** (Freeze/unfreeze camera on the fly)
-- **Ultrawide: Snap Viewport Left**
-- **Ultrawide: Snap Viewport Center**
-- **Ultrawide: Snap Viewport Right**
+## Already have your own scene?
+
+Skip the setup button. Add your capture to any scene, then right-click it → **Transform → Fit to screen**.
+The script crops that source in whichever scene is live.
+
+## Troubleshooting
+
+- **Nothing moves:** make sure the selected Capture Source is in the scene that's live, and that tracking isn't toggled off by the hotkey.
+- **Game capture shows nothing yet:** the script waits until the game is hooked and has a size.
+- **Controller does nothing:** an XInput (Xbox-compatible) controller is needed. Mouse and controller input work on Windows only.
+- **View is offset on a multi-monitor setup:** set **Monitor X offset**.
+
+More fixes in the [guide's troubleshooting section](GUIDE.md#troubleshooting).
 
 ---
 
-<br>
-<hr>
-<br>
+## Older scripts
 
-# 📦 Legacy Reference (Old 4-Script System)
+The original single-purpose scripts are in [`legacy/`](legacy). They need a Crop/Pad filter named `Viewport_Crop` and manual sizes. `ultrawide_tracker.lua` replaces both.
 
-<details>
-<summary><b>Click to expand rules & setup for the old multi-script versions</b></summary>
+## License
 
-### ⚠️ Deprecation Notice
-The 4 individual standalone scripts (previously split by aspect ratio and tracking mode) have been superseded by the unified `ultrawide_tracker.lua`. If you are still maintaining legacy setups, the rules below apply:
-
-#### Old Version Architecture Rules:
-1. **Separate Aspect Files:** 
-   - `21x9_horizontal.py` (3440×1440 / 2560×1080)
-   - `32x9_horizontal.py` (5120×1440 / 3840×1080)
-   - `21x9_2D.py`
-   - `32x9_2D.py`
-2. **Manual Canvas Alignment:** 
-   - OBS Base Canvas had to be manually configured to 16:9 (e.g. `2560x1440` or `1920x1080`).
-   - The capture source required manual alignment to `Top Left (0,0)` with bounding box scaling disabled.
-3. **Python Runtime Requirement:** 
-   - Required configuring Python 3.8–3.10 x64 paths in OBS Script Settings (`Tools -> Scripts -> Python Settings`).
-   - Depended on external modules (`ctypes`, `pywin32`) for cursor pooling.
-4. **Crop Offset Formulas:**
-   - Left Crop = `(CursorX / SourceWidth) * (SourceWidth - TargetWidth)`
-   - Right Crop = `(SourceWidth - TargetWidth) - LeftCrop`
-   - Top Crop = `(CursorY / SourceHeight) * (SourceHeight - TargetHeight)`
-   - Bottom Crop = `(SourceHeight - TargetHeight) - TopCrop`
-
-*All the legacy math, edge clamping, and transforms above are now handled internally and dynamically by `ultrawide_tracker.lua`.*
-
-</details>
-
----
-
-## 📄 License
-Released under the **MIT License**. Use it, mod it, share it!
+MIT. Use it, mod it, share it. PRs welcome.
