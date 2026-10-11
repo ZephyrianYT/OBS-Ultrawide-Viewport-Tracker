@@ -167,19 +167,24 @@ local function apply_crop(g, x, y)
     local t = math.floor(y + 0.5)
     local r = math.floor(g.max_x + 0.5) - l
     local b = math.floor(g.max_y + 0.5) - t
-    if l == last_crop.l and r == last_crop.r and t == last_crop.t and b == last_crop.b then
-        return
-    end
 
     local scene_src = obs.obs_frontend_get_current_scene()
     if scene_src == nil then return end
+    local scene_name = obs.obs_source_get_name(scene_src)
+    -- Skip redundant updates, but always re-apply after a scene switch.
+    if scene_name == last_crop.scene and l == last_crop.l and r == last_crop.r
+            and t == last_crop.t and b == last_crop.b then
+        obs.obs_source_release(scene_src)
+        return
+    end
+
     local scene = obs.obs_scene_from_source(scene_src)
     local item = scene and obs.obs_scene_find_source_recursive(scene, source_name)
     if item ~= nil then
         local crop = obs.obs_sceneitem_crop()
         crop.left, crop.right, crop.top, crop.bottom = l, r, t, b
         obs.obs_sceneitem_set_crop(item, crop)
-        last_crop = {l = l, r = r, t = t, b = b}
+        last_crop = {scene = scene_name, l = l, r = r, t = t, b = b}
     end
     obs.obs_source_release(scene_src)
 end
